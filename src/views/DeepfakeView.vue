@@ -1,7 +1,7 @@
 <script setup>
 import PulseLoader from 'vue-spinner/src/PulseLoader.vue';
 import BackButton from '@/components/BackButton.vue';
-import { reactive, onMounted } from 'vue';
+import { reactive, onMounted, computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 import { useToast } from 'vue-toastification';
 import axios from 'axios';
@@ -27,6 +27,11 @@ onMounted(async () => {
   } finally {
     state.isLoading = false;
   }
+});
+
+const videoUrl = computed(() => {
+  if (!state.deepfake || !state.deepfake.video_filename) return null;
+  return `/api/uploads/${state.deepfake.video_filename}`;
 });
 
 const deleteDeepfake = async () => {
@@ -58,12 +63,6 @@ const deleteDeepfake = async () => {
             <h1 class="text-3xl font-bold mb-4">
               {{ state.deepfake.title }}
             </h1>
-            <div class="text-gray-500 mb-4 flex align-middle justify-center md:justify-start">
-              <i class="pi pi-map-marker text-xl text-orange-700 mr-2"></i>
-              <p class="text-orange-700">
-                {{ state.deepfake.location || 'Location not available' }}
-              </p>
-            </div>
             <div class="text-gray-500 mb-4 flex justify-center md:justify-start">
               <p class="text-gray-700">
                 Duration: {{ state.deepfake.duration ?? 'Unknown' }}s
@@ -81,18 +80,21 @@ const deleteDeepfake = async () => {
           <!-- Video Player -->
           <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <h3 class="text-green-800 text-lg font-bold mb-6">Video</h3>
+
             <div class="relative w-full pb-[56.25%] overflow-hidden rounded-lg">
-              <video
-                v-if="state.deepfake.file_path"
-                controls
-                class="absolute top-0 left-0 w-full h-full object-cover"
-              >
-                <source :src="state.deepfake.file_path" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <p v-else class="text-gray-500">No video available</p>
+              <template v-if="videoUrl">
+                <video controls class="absolute top-0 left-0 w-full h-full object-cover">
+                  <source :src="videoUrl" type="video/mp4" />
+                  Your browser does not support the video tag.
+                </video>
+              </template>
+
+              <p v-else class="text-gray-500 absolute top-0 left-0 w-full h-full flex items-center justify-center">
+                No video available
+              </p>
             </div>
           </div>
+
 
           <!-- Description -->
           <div class="bg-white p-6 rounded-lg shadow-md mt-6">
@@ -121,10 +123,8 @@ const deleteDeepfake = async () => {
           <!-- Manage -->
           <div class="bg-white p-6 rounded-lg shadow-md mt-6">
             <h3 class="text-xl font-bold mb-6">Manage Deepfake</h3>
-            <button
-              @click="deleteDeepfake"
-              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
-            >
+            <button @click="deleteDeepfake"
+              class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block">
               Delete Deepfake
             </button>
           </div>
