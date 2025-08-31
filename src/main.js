@@ -1,9 +1,15 @@
-import { createApp } from 'vue'
-import App from './App.vue'
-import router from './router'
+import './assets/main.css';
+import 'primeicons/primeicons.css';
+import Toast from 'vue-toastification';
+import 'vue-toastification/dist/index.css';
+import router from './router';
 
-const app = createApp(App)
+import { createApp } from 'vue';
+import App from './App.vue';
 
-app.use(router)
+const app = createApp(App);
 
-app.mount('#app')
+app.use(router);
+app.use(Toast);
+
+app.mount('#app');
