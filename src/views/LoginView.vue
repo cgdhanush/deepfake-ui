@@ -36,12 +36,14 @@ const login = async () => {
     isLoggedIn.value = true
 
     // Optionally save to localStorage for persistence
-    localStorage.setItem('token', response.data.access_token)
+    localStorage.setItem('access_token', response.data.access_token)
     if (accessToken.value) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
     }
     router.push({ name: 'home' })
 
+    return true; // login successful
+    
   } catch (err) {
     console.error('Login failed:', err)
     error.value = 'Invalid username or password.'
