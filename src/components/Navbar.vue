@@ -1,69 +1,70 @@
 <script setup>
-import { RouterLink, useRoute } from 'vue-router';
-import logo from '@/assets/img/logo.png'; // This is correct as long as the logo is stored in the correct folder.
+import { RouterLink, useRouter } from 'vue-router'
+import { isLoggedIn, accessToken } from '@/authState'
+import logo from '@/assets/img/logo.png'
 
-const isActiveLink = (routePath) => {
-  const route = useRoute();
-  // Ensure exact path matching or handle trailing slashes
-  return route.fullPath === routePath;
-};
+const router = useRouter()
+
+const logout = () => {
+  accessToken.value = null
+  isLoggedIn.value = false
+  localStorage.removeItem('token')
+  router.push('/login') // redirect to login page after logout
+}
 </script>
 
 <template>
   <nav class="navbar">
-    <div class="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
+    <div class="mx-auto max-w-7x2 px-2 sm:px-6 lg:px-8 bg-gradient-to-r from-gray-700 to-black">
       <div class="flex h-20 items-center justify-between">
-        <div
-          class="flex flex-1 items-center justify-center md:items-stretch md:justify-start"
-        >
+        <div class="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
           <!-- Logo -->
           <RouterLink class="flex flex-shrink-0 items-center mr-4" to="/">
             <img class="h-10 w-auto" :src="logo" alt="Vue Deepfakes" />
-            <span class="hidden md:block text-white text-2xl font-bold ml-2"
-              >Deepfake</span
-            >
+            <span class="hidden md:block text-white text-2xl font-bold ml-2">
+              Deepfake
+            </span>
           </RouterLink>
+
+          <!-- Navigation Links -->
           <div class="md:ml-auto">
             <div class="flex space-x-2">
-              <RouterLink
-                to="/"
-                :class="[
-                  isActiveLink('/')
-                    ? 'bg-green-900'
-                    : 'hover:bg-gray-900 hover:text-white',
-                  'text-white',
-                  'px-3',
-                  'py-2',
-                  'rounded-md',
-                ]"
-                >Home</RouterLink
-              >
-              <RouterLink
-                to="/deepfakes/upload"
-                :class="[
-                  isActiveLink('/deepfakes/upload')  // Corrected the active path
-                    ? 'bg-green-900'
-                    : 'hover:bg-gray-900 hover:text-white',
-                  'text-white',
-                  'px-3',
-                  'py-2',
-                  'rounded-md',
-                ]"
-                >Check for Deepfakes</RouterLink
-              >
-              <RouterLink
-                to="/about"
-                :class="[
-                  isActiveLink('/about')
-                    ? 'bg-green-900'
-                    : 'hover:bg-gray-900 hover:text-white',
-                  'text-white',
-                  'px-3',
-                  'py-2',
-                  'rounded-md',
-                ]"
-                >About</RouterLink
-              >
+              <RouterLink to="/" active-class="bg-green-900"
+                class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                Home
+              </RouterLink>
+              
+              <RouterLink to="/about" active-class="bg-green-900"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                  About
+                </RouterLink>
+
+              <!-- Conditionally rendered links -->
+              <template v-if="!isLoggedIn">
+                <RouterLink to="/login" active-class="bg-green-900"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                  Login
+                </RouterLink>
+                <RouterLink to="/signup" active-class="bg-green-900"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                  Sign Up
+                </RouterLink>
+              </template>
+
+              <template v-else>
+                <RouterLink to="/deepfakes/upload" active-class="bg-green-900"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                  Check for Deepfakes
+                </RouterLink>
+                <RouterLink to="/deepfakes" active-class="bg-green-900"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white">
+                  Deepfakes
+                </RouterLink>
+                <button @click="logout"
+                  class="text-white px-3 py-2 rounded-md hover:bg-gray-900 hover:text-white bg-red-600">
+                  Logout
+                </button>
+              </template>
             </div>
           </div>
         </div>
@@ -74,16 +75,13 @@ const isActiveLink = (routePath) => {
 
 <style scoped>
 .navbar {
-  background-color: #333; /* Add background color to navbar */
-  color: green; /* Optional: You can remove this if you want to change other colors */
+  background-color: #333;
 }
 
-.navbar a {
-  transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover transitions */
-}
-
-.navbar .active-link {
-  background-color: #3b820c; /* Active link background color */
-  color: white; /* Active link text color */
+.navbar a,
+.navbar button {
+  transition: background-color 0.3s ease, color 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 </style>

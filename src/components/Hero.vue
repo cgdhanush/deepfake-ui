@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-  <section class="custom-bg py-20 mb-4"> <!-- Use the custom background class -->
+  <section class="bg-gradient-to-r from-gray-700 to-black py-20 mb-4"> <!-- Use the custom background class -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col items-center">
       <div class="text-center">
         <h1 class="custom-title sm:text-5xl md:text-6xl">
@@ -27,11 +27,7 @@ defineProps({
 </template>
 
 <style scoped>
-/* Custom background color for the section */
-.custom-bg {
-  background-color: #4e4e4e; /* Tailwind's bg-blue-800 color, or any color you choose */
-}
-  
+
 /* Title styling */
 .custom-title {
   color: #fbbf24; /* Tailwind's text-yellow-400 color */

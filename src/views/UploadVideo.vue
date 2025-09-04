@@ -59,34 +59,40 @@ const handleUpload = async () => {
     return;
   }
 
-  if (!title.value || !duration.value || !file_path.value) {
-    toast.error('All fields are required');
+  if (!title.value || !duration.value) {
+    toast.error('Title and duration are required');
+    return;
+  }
+
+  let current_user;
+  try {
+    const res = await axios.get('/api/users/me', {});
+    current_user = res.data;
+  } catch (error) {
+    console.error('Error fetching current user', error);
+    toast.error('Could not retrieve user info');
     return;
   }
 
   const formData = new FormData();
+  formData.append('user_id', current_user.id); // corrected to match DB column
   formData.append('video', videoFile.value);
   formData.append('title', title.value);
-  formData.append('description', description.value);
+  formData.append('description', description.value || '');
   formData.append('duration', duration.value);
-  formData.append('file_path', file_path.value);  // Include the file_path field in the formData
-  formData.append('uploadedDate', uploadedDate.value);  // Include the uploaded date
+  formData.append('uploadedDate', uploadedDate.value); // ensure this is a proper datetime string
 
   try {
-    // Make the real POST request to your API
-    const response = await axios.post('/api/upload_video', formData, {
+    const response = await axios.post('/api/upload-video', formData, {
       headers: {
-        'Content-Type': 'multipart/form-data', // Assuming you're sending a file
+        'Content-Type': 'multipart/form-data',
       },
     });
 
-    // On success
     toast.success('Deepfake uploaded successfully');
-    router.push(`/deepfakes/${response.data.id}`); // Redirect to the uploaded deepfake view
+    router.push(`/deepfakes/${response.data.id}`);
   } catch (error) {
     console.error('Error uploading deepfake', error);
-
-    // Show error message
     toast.error('Failed to upload deepfake');
   }
 };
@@ -97,7 +103,7 @@ const handleUpload = async () => {
   <div class="container mx-auto py-12">
     <h1 class="text-3xl font-bold mb-8 text-center">Upload a Deepfake Video</h1>
 
-    <div class="max-w-3xl mx-auto bg-white p-6 rounded-lg shadow-md">
+    <div class="max-w-2xl mx-auto bg-blue-50 p-6 rounded-lg shadow-md">
       <!-- Upload Form -->
       <form @submit.prevent="handleUpload">
 

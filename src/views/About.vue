@@ -42,10 +42,14 @@
           Together, we are committed to building a safer digital world for everyone.
         </p>
         <!-- Team Member Details (Optional) -->
-        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
           <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold text-gray-800">Dhanush C G</h3>
             <p class="mt-2 text-gray-600">1HK22CS037</p>
+          </div>
+           <div class="bg-white p-6 rounded-lg shadow-lg">
+            <h3 class="text-xl font-semibold text-gray-800">Doke Nishanth</h3>
+            <p class="mt-2 text-gray-600">1HK22CS036</p>
           </div>
           <div class="bg-white p-6 rounded-lg shadow-lg">
             <h3 class="text-xl font-semibold text-gray-800">Anushree A Kadwadkar</h3>
@@ -55,6 +59,7 @@
             <h3 class="text-xl font-semibold text-gray-800">D Prasanna Kumar</h3>
             <p class="mt-2 text-gray-600">1HK22CS038</p>
           </div>
+         
         </div>
       </div>
     </div>

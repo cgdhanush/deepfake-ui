@@ -78,12 +78,12 @@ const deleteDeepfake = async () => {
           </div>
 
           <!-- Video Player -->
-          <div class="bg-white p-6 rounded-lg shadow-md mt-6">
+          <div class="bg-white p-6 rounded-lg shadow-md mt-6 max-w-screen-md mx-auto">
             <h3 class="text-green-800 text-lg font-bold mb-6">Video</h3>
 
-            <div class="relative w-full pb-[56.25%] overflow-hidden rounded-lg">
+            <div class="relative w-full overflow-hidden rounded-lg video-container">
               <template v-if="videoUrl">
-                <video controls class="absolute top-0 left-0 w-full h-full object-cover">
+                <video controls class="absolute top-0 left-0 w-full h-full object-cover rounded-lg">
                   <source :src="videoUrl" type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>
@@ -137,3 +137,19 @@ const deleteDeepfake = async () => {
     <PulseLoader />
   </div>
 </template>
+
+
+<style scoped>
+/* Default: portrait aspect ratio 9:16 (mobile) */
+.video-container {
+  padding-bottom: 177.78%; /* 16:9 rotated to 9:16 (height/width * 100%) */
+  position: relative;
+}
+
+/* For landscape orientation or wider screens (e.g. min-width 768px) */
+@media (min-width: 768px), (orientation: landscape) {
+  .video-container {
+    padding-bottom: 56.25%; /* 16:9 aspect ratio */
+  }
+}
+</style>
