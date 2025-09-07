@@ -40,6 +40,7 @@ const login = async () => {
     if (accessToken.value) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${accessToken.value}`
     }
+    
     router.push({ name: 'home' })
 
     return true; // login successful

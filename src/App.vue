@@ -1,12 +1,19 @@
 <script setup>
 import Navbar from '@/components/Navbar.vue';
 import { RouterView } from 'vue-router';
-
 import { loginPrompt } from '@/authState'
+import { onMounted } from 'vue'
+import { useAuthStore } from '@/store/auth'
 
 const closePopup = () => {
   loginPrompt.value = false
 }
+
+const auth = useAuthStore()
+
+onMounted(() => {
+  auth.restoreToken()
+})
 
 </script>
 

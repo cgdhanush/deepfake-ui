@@ -1,15 +1,17 @@
 <script setup>
 import { RouterLink, useRouter } from 'vue-router'
-import { isLoggedIn, accessToken } from '@/authState'
+import { isLoggedIn } from '@/authState'
 import logo from '@/assets/img/logo.png'
+import { useAuthStore } from '@/store/auth'
 
 const router = useRouter()
 
+const auth = useAuthStore()
+
+
 const logout = () => {
-  accessToken.value = null
-  isLoggedIn.value = false
-  localStorage.removeItem('token')
-  router.push('/login') // redirect to login page after logout
+  auth.logout()
+  router.push('/')
 }
 </script>
 
