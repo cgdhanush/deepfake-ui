@@ -10,32 +10,20 @@ const toast = useToast();
 const title = ref("");
 const description = ref("");
 const file_path = ref("");
-const duration = ref(0);
-const videoFile = ref(null);
+const imageFile = ref(null);
 
-const onVideoFileChange = (event) => {
+const onImageFileChange = (event) => {
   const file = event.target.files[0];
   if (file) {
     title.value = file.name.replace(/\.[^/.]+$/, "");
     file_path.value = file.name;
-    videoFile.value = file;
-
-    // Get video duration
-    const videoElement = document.createElement("video");
-    const videoURL = URL.createObjectURL(file);
-    videoElement.src = videoURL;
-    videoElement.onloadedmetadata = () => {
-      duration.value = !isNaN(videoElement.duration)
-        ? videoElement.duration
-        : 0;
-      URL.revokeObjectURL(videoURL);
-    };
+    imageFile.value = file;
   }
 };
 
 const handleUpload = async () => {
-  if (!videoFile.value) {
-    toast.error("Please select a video to upload");
+  if (!imageFile.value) {
+    toast.error("Please select an image to upload");
     return;
   }
   if (!title.value) {
@@ -54,20 +42,19 @@ const handleUpload = async () => {
 
   const formData = new FormData();
   formData.append("user_id", current_user.id);
-  formData.append("video", videoFile.value);
+  formData.append("image", imageFile.value);
   formData.append("title", title.value);
   formData.append("description", description.value || "");
-  formData.append("duration", duration.value);
 
   try {
-    const response = await axios.post("/api/upload-video", formData, {
+    const response = await axios.post("/api/upload-image", formData, {
       headers: { "Content-Type": "multipart/form-data" },
     });
 
-    toast.success("Video uploaded successfully");
+    toast.success("Image uploaded successfully");
     router.push(`/deepfakes/${response.data.id}`);
   } catch (error) {
-    toast.error("Failed to upload video");
+    toast.error("Failed to upload image");
   }
 };
 </script>
@@ -76,8 +63,8 @@ const handleUpload = async () => {
   <div class="max-w-2xl mx-auto bg-blue-50 p-6 rounded-lg shadow-md">
     <form @submit.prevent="handleUpload">
       <div class="mb-4">
-        <label for="video" class="block text-gray-700 font-medium mb-2">Upload Video</label>
-        <input id="video" type="file" accept="video/mp4, video/avi" @change="onVideoFileChange"
+        <label for="image" class="block text-gray-700 font-medium mb-2">Select Image</label>
+        <input id="image" type="file" accept="image/png, image/jpeg" @change="onImageFileChange"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" />
       </div>
 
@@ -85,20 +72,14 @@ const handleUpload = async () => {
         <label for="title" class="block text-gray-700 font-medium mb-2">Title</label>
         <input id="title" v-model="title" type="text"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Enter video title" />
+          placeholder="Enter image title" />
       </div>
 
       <div class="mb-4">
         <label for="description" class="block text-gray-700 font-medium mb-2">Description</label>
         <textarea id="description" v-model="description" rows="3"
           class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-          placeholder="Describe the video"></textarea>
-      </div>
-
-      <div class="mb-4">
-        <label for="duration" class="block text-gray-700 font-medium mb-2">Duration (sec)</label>
-        <input id="duration" v-model="duration" type="number"
-          class="w-full px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" readonly />
+          placeholder="Describe the image"></textarea>
       </div>
 
       <div class="mb-4">
@@ -110,7 +91,7 @@ const handleUpload = async () => {
       <div class="flex justify-center mt-6">
         <button type="submit"
           class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-6 rounded-full">
-          Upload Video
+          Upload Image
         </button>
       </div>
     </form>

@@ -10,9 +10,13 @@ const auth = useAuthStore()
 
 
 const logout = () => {
-  auth.logout()
-  router.push('/')
-}
+  auth.logout(); // Your logout logic (clear tokens, user state)
+  router.push('/').then(() => {
+    // Force a page refresh after redirect
+    window.location.reload();
+  });
+};
+
 </script>
 
 <template>

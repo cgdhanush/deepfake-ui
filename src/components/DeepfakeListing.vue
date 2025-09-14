@@ -58,15 +58,17 @@ const detectionDetails = computed(() => {
 
       <!-- Confidence Level -->
       <h3 class="text-green-500 mb-2">
-        Confidence: {{ detectionDetails.confidence }} ({{ detectionDetails.detection_score }}%)
+        Confidence:
+        {{ (detectionDetails.confidence * 100).toFixed(2) }}%
       </h3>
+
 
       <!-- Detection Status -->
       <div v-if="detectionDetails.deepfake_detected" class="text-red-500 mb-2">
-        Deepfake Detected: Yes
+        Result: Deepfake Detected
       </div>
       <div v-else class="text-gray-500 mb-2">
-        Deepfake Detected: No
+        Result: Deepfake Not Detected
       </div>
 
       <!-- Divider -->
