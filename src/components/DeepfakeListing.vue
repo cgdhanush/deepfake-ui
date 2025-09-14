@@ -45,7 +45,7 @@ const detectionDetails = computed(() => {
         <h3 class="text-xl font-bold">{{ deepfake.title }}</h3>
       </div>
 
-      Description with Toggle
+      Description: 
       <div class="mb-5">
         <div>{{ truncatedDescription }}</div>
         <button

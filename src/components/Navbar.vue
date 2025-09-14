@@ -9,13 +9,13 @@ const router = useRouter()
 const auth = useAuthStore()
 
 
-const logout = () => {
-  auth.logout(); // Your logout logic (clear tokens, user state)
-  router.push('/').then(() => {
-    // Force a page refresh after redirect
-    window.location.reload();
-  });
+const logout = async () => {
+  auth.logout(); // clear tokens, user state
+
+  await router.replace("/"); // replace instead of push to avoid stacking history
+  window.location.reload();  // force refresh AFTER navigation
 };
+
 
 </script>
 

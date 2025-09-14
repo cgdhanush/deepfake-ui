@@ -32,17 +32,17 @@ onMounted(async () => {
 
     if (state.deepfake?.result) {
       detectionChartData.value = {
-        labels: ["Detection Score", "Remaining"],
-        datasets: [
-          {
-            data: [
-              state.deepfake.result.detection_score ?? 0,
-              1 - (state.deepfake.result.detection_score ?? 0),
-            ],
-            backgroundColor: ["#3b82f6", "#d1d5db"],
-          },
-        ],
-      };
+          labels: ["Real Probability", "Fake Probability"],
+          datasets: [
+            {
+              data: [
+                state.deepfake.result.real_score ?? 0,
+                state.deepfake.result.fake_score ?? 0,
+              ],
+              backgroundColor: ["#10b981", "#ef4444"], // green for real, red for fake
+            },
+          ],
+        };
 
       confidenceChartData.value = {
         labels: ["Confidence", "Remaining"],
