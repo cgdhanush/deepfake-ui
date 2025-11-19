@@ -56,12 +56,6 @@ const detectionDetails = computed(() => {
         </button>
       </div>
 
-      <!-- Confidence Level -->
-      <h3 class="text-green-500 mb-2">
-        Confidence:
-        {{ (detectionDetails.confidence * 100).toFixed(2) }}%
-      </h3>
-
 
       <!-- Detection Status -->
       <div v-if="detectionDetails.deepfake_detected" class="text-red-500 mb-2">
